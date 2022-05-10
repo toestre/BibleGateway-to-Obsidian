@@ -81,8 +81,7 @@ declare -a lengtharray # Declaring amount of chapters in each book
 # Name of "The Bible" in your language
 biblename="Die Bibel"
 # Full names of the books of the Bible
-bookarray=(Genesis Exodus Levitikus Numberi Deuteronomium Josua Richter Ruth "1. Samuel" "2. Samuel" "1. Könige" "2. Könige" "1. Chronik" "2. Chronik" Esra Nehemia Esther Hiob "Die Psalmen" Sprüche Prediger "Das Hohelied" Jesaja Jeremia Klagelieder Hesekiel Daniel Hosea Joel Amos Obadja Jona Micha Nahum Habakuk Zephanja Haggai Sacharja Maleachi Matthäus Markus Lukus Johannes Apostelgeschichte
-Römer "1. Korinther" "2. Korinther" Galater Epheser Philipper Kolosser "1. Thessalonicher" "2. Thessalonicher" "1. Timotheur" "2. Timotheus" Titus Philemon Hebräer Jakobus "1. Petrus" "2. Petrus" "1. Johannes" "2. Johannes" "3. Johannes" Judas Offenbarung)
+bookarray=(Genesis Exodus Levitikus Numberi Deuteronomium Josua Richter Ruth "1. Samuel" "2. Samuel" "1. Könige" "2. Könige" "1. Chronik" "2. Chronik" Esra Nehemia Esther Hiob "Die Psalmen" Sprüche Prediger "Das Hohelied" Jesaja Jeremia Klagelieder Hesekiel Daniel Hosea Joel Amos Obadja Jona Micha Nahum Habakuk Zephanja Haggai Sacharja Maleachi Matthäus Markus Lukus Johannes Apostelgeschichte Römer "1. Korinther" "2. Korinther" Galater Epheser Philipper Kolosser "1. Thessalonicher" "2. Thessalonicher" "1. Timotheus" "2. Timotheus" Titus Philemon Hebräer Jakobus "1. Petrus" "2. Petrus" "1. Johannes" "2. Johannes" "3. Johannes" Judas Offenbarung)
 # Short names of the books of the Bible
 abbarray=(Gen Exod Lev Num Deut Jos Ri Ruth 1Sam 2Sam 1Kön 2Kön 1Chr 2Chr Esra Neh Esth Hiob Ps Spr Pre Hld Jes Jer Klgl Hes Dan Hos Joel Amos Obd Jona Mi Nah Hab Zeph Hag Sach Mal Mt Mk Lk Joh Apg Röm 1Kor 2Kor Gal Eph Phil Kol 1Thess 2Thess 1Tim 2Tim Titus Phil Heb Jak 1Petr 2Petr 1Joh 2Joh 3Joh Jud Off)
 # -------------------------------------------
