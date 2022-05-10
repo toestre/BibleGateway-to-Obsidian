@@ -79,12 +79,21 @@ declare -a lengtharray # Declaring amount of chapters in each book
 # -------------------------------------------
 # For Translation, translate these three lists. Seperated by space and wrapped in quotes if they include whitespace.
 # Name of "The Bible" in your language
-biblename="The Bible"
+biblename="Die Bibel"
 # Full names of the books of the Bible
-bookarray=(Genesis Exodus Leviticus Numbers Deuteronomy Joshua Judges Ruth "1 Samuel" "2 Samuel" "1 Kings" "2 Kings" "1 Chronicles" "2 Chronicles" Ezra Nehemiah Esther Job Psalms Proverbs Ecclesiastes "Song of Solomon" Isaiah Jeremiah Lamentations Ezekiel Daniel Hosea Joel Amos Obadiah Jonah Micah Nahum Habakkuk Zephaniah Haggai Zechariah Malachi Matthew Mark Luke John Acts
-Romans "1 Corinthians" "2 Corinthians" Galatians Ephesians Philippians Colossians "1 Thessalonians" "2 Thessalonians" "1 Timothy" "2 Timothy" Titus Philemon Hebrews James "1 Peter" "2 Peter" "1 John" "2 John" "3 John" Jude Revelation)
+bookarray=(Genesis Exodus Levitikus Numberi Deuteronomium Josua Richter Ruth "1. Samuel" "2. Samuel" "1. Könige" "2. Könige" "1. Chronik" "2. Chronik" Esra Nehemia Esther Hiob "Die Psalmen" Sprüche Prediger "Das Hohelied" Jesaja Jeremia Klagelieder Hesekiel Daniel Hosea Joel Amos Obadja Jona Micha Nahum Habakuk Zephanja Haggai Sacharja Maleachi Matthäus Markus Lukus Johannes Apostelgeschichte
+Römer "1. Korinther" "2. Korinther" Galater Epheser Philipper Kolosser "1. Thessalonicher" "2. Thessalonicher" "1. Timotheur" "2. Timotheus" Titus Philemon Hebräer Jakobus "1. Petrus" "2. Petrus" "1. Johannes" "2. Johannes" "3. Johannes" Judas Offenbarung)
 # Short names of the books of the Bible
 abbarray=(Gen Exod Lev Num Deut Josh Judg Ruth "1 Sam" "2 Sam" "1 Kings" "2 Kings" "1 Chron" "2 Chron" Ezr Neh Esth Job Ps Prov Eccles Song Isa Jer Lam Ezek Dan Hos Joel Am Obad Jonah Micah Nah Hab Zeph Hag Zech Mal Matt Mark Luke John Acts Rom "1 Cor" "2 Cor" Gal Ephes Phil Col "1 Thess" "2 Thess" "1 Tim" "2 Tim" Titus Philem Heb James "1 Pet" "2 Pet" "1 John" "2 John" "3 John" Jude Rev)
+# -------------------------------------------
+# For Translation, translate these three lists. Seperated by space and wrapped in quotes if they include whitespace.
+# Name of "The Bible" in your language
+# biblename="The Bible"
+# Full names of the books of the Bible
+# bookarray=(Genesis Exodus Leviticus Numbers Deuteronomy Joshua Judges Ruth "1 Samuel" "2 Samuel" "1 Kings" "2 Kings" "1 Chronicles" "2 Chronicles" Ezra Nehemiah Esther Job Psalms Proverbs Ecclesiastes "Song of Solomon" Isaiah Jeremiah Lamentations Ezekiel Daniel Hosea Joel Amos Obadiah Jonah Micah Nahum Habakkuk Zephaniah Haggai Zechariah Malachi Matthew Mark Luke John Acts
+# Romans "1 Corinthians" "2 Corinthians" Galatians Ephesians Philippians Colossians "1 Thessalonians" "2 Thessalonians" "1 Timothy" "2 Timothy" Titus Philemon Hebrews James "1 Peter" "2 Peter" "1 John" "2 John" "3 John" Jude Revelation)
+# Short names of the books of the Bible
+# abbarray=(Gen Exod Lev Num Deut Josh Judg Ruth "1 Sam" "2 Sam" "1 Kings" "2 Kings" "1 Chron" "2 Chron" Ezr Neh Esth Job Ps Prov Eccles Song Isa Jer Lam Ezek Dan Hos Joel Am Obad Jonah Micah Nah Hab Zeph Hag Zech Mal Matt Mark Luke John Acts Rom "1 Cor" "2 Cor" Gal Ephes Phil Col "1 Thess" "2 Thess" "1 Tim" "2 Tim" Titus Philem Heb James "1 Pet" "2 Pet" "1 John" "2 John" "3 John" Jude Rev)
 # -------------------------------------------
 
 # Book chapter list
@@ -98,145 +107,143 @@ if ${verbose} -eq "true"; then
 fi
 
  # Cycling through the book counter, setting which book and its maxchapter
-  for ((book_counter=0; book_counter <= book_counter_max; book_counter++))
-  do
+for ((book_counter=0; book_counter <= book_counter_max; book_counter++))
+do
 
 	if ${verbose} -eq "true"; then
 		echo ""   # Make a new line which the '-n' flag to the echo command prevents.
 	fi
 
-    book=${bookarray[$book_counter]}
-    maxchapter=${lengtharray[$book_counter]}
-    abbreviation=${abbarray[$book_counter]}
+  book=${bookarray[$book_counter]}
+  maxchapter=${lengtharray[$book_counter]}
+  abbreviation=${abbarray[$book_counter]}
 
-	if ${verbose} -eq "true"; then
+	if [[ ${verbose} -eq "true" ]]; then
 		echo -n "${book} "
 	fi
 
-    for ((chapter=1; chapter <= maxchapter; chapter++))
-    do
+  for ((chapter=1; chapter <= maxchapter; chapter++))
+  do
 
-    	if ${verbose} -eq "true"; then
-    		echo -n "."
-		fi
+  	if ${verbose} -eq "true"; then
+   		echo -n "."
+	  fi
 
-((prev_chapter=chapter-1)) # Counting the previous and next chapter for navigation
-((next_chapter=chapter+1))
+    ((prev_chapter=chapter-1)) # Counting the previous and next chapter for navigation
+    ((next_chapter=chapter+1))
 
-# Exporting
-export_prefix="${abbreviation} " # Setting the first half of the filename
-filename=${export_prefix}$chapter # Setting the filename
-
-
-  prev_file=${export_prefix}$prev_chapter # Naming previous and next files
-  next_file=${export_prefix}$next_chapter
-
-  # Navigation with INLINE BREADCRUMBS DISABLED and YAML DISABLED – write normal navigation
-  if [[ ${breadcrumbs_inline} -eq "false" && ${breadcrumbs_yaml} -eq "false" ]]; then
-
-  # Formatting Navigation and omitting links that aren't necessary
-  if [[ ${maxchapter} -eq 1 ]]; then
-    # For a book that only has one chapter
-    navigation="[[${book}]]"
-  elif [ ${chapter} -eq ${maxchapter} ]; then
-    # If this is the last chapter of the book
-    navigation="[[${prev_file}|← ${book} ${prev_chapter}]] | [[${book}]]"
-  elif [ ${chapter} -eq 1 ]; then
-    # If this is the first chapter of the book
-    navigation="[[${book}]] | [[${next_file}|${book} ${next_chapter} →]]"
-  else
-    # Navigation for everything else
-    navigation="[[${prev_file}|← ${book} ${prev_chapter}]] | [[${book}]] | [[${next_file}|${book} ${next_chapter} →]]"
-  fi
-  fi
-
-  # Navigation with INLINE BREADCRUMBS ENABLED
-  if ${breadcrumbs_inline} -eq "true"; then
-  # Formatting Navigation and omitting links that aren't necessary
-  if [ ${maxchapter} -eq 1 ]; then
-    # For a book that only has one chapter
-    navigation="(up:: [[${book}]])"
-  elif [ ${chapter} -eq ${maxchapter} ]; then
-    # If this is the last chapter of the book
-    navigation="(previous:: [[${prev_file}|← ${book} ${prev_chapter}]]) | (up:: [[${book}]])"
-  elif [ ${chapter} -eq 1 ]; then
-    # If this is the first chapter of the book
-    navigation="(up:: [[${book}]]) | (next:: [[${next_file}|${book} ${next_chapter} →]])"
-  else
-    # Navigation for everything else
-    navigation="(previous:: [[${prev_file}|← ${book} ${prev_chapter}]]) | (up:: [[${book}]]) | (next:: [[${next_file}|${book} ${next_chapter} →]])"
-  fi
-  fi
-
-  if ${boldwords} -eq "true" && ${headers} -eq "false"; then
-    text=$(ruby bg2md.rb -e -c -b -f -l -r -v "${translation}" "${book} ${chapter}") # This calls the 'bg2md_mod' script
-  elif ${boldwords} -eq "true" && ${headers} -eq "true"; then
-    text=$(ruby bg2md.rb -c -b -f -l -r -v "${translation}" "${book} ${chapter}") # This calls the 'bg2md_mod' script
-  elif ${boldwords} -eq "false" && ${headers} -eq "true"; then
-    text=$(ruby bg2md.rb -e -c -f -l -r -v "${translation}" "${book} ${chapter}") # This calls the 'bg2md_mod' script
-  else
-    text=$(ruby bg2md.rb -e -c -f -l -r -v "${translation}" "${book} ${chapter}") # This calls the 'bg2md_mod' script
-  fi
+    # Exporting
+    export_prefix="${abbreviation} " # Setting the first half of the filename
+    filename=${export_prefix}$chapter # Setting the filename
 
 
-  text=$(echo $text | sed 's/^(.*?)v1/v1/') # Deleting unwanted headers
+    prev_file=${export_prefix}$prev_chapter # Naming previous and next files
+    next_file=${export_prefix}$next_chapter
 
-  # Formatting the title for markdown
-  title="# ${book} ${chapter}"
+    # Navigation with INLINE BREADCRUMBS DISABLED and YAML DISABLED – write normal navigation
+    if [[ ${breadcrumbs_inline} -eq "false" && ${breadcrumbs_yaml} -eq "false" ]]; then
+      # Formatting Navigation and omitting links that aren't necessary
+      if [[ ${maxchapter} -eq 1 ]]; then
+        # For a book that only has one chapter
+        navigation="[[${book}]]"
+      elif [ ${chapter} -eq ${maxchapter} ]; then
+        # If this is the last chapter of the book
+        navigation="[[${prev_file}|← ${book} ${prev_chapter}]] | [[${book}]]"
+      elif [ ${chapter} -eq 1 ]; then
+        # If this is the first chapter of the book
+        navigation="[[${book}]] | [[${next_file}|${book} ${next_chapter} →]]"
+      else
+        # Navigation for everything else
+        navigation="[[${prev_file}|← ${book} ${prev_chapter}]] | [[${book}]] | [[${next_file}|${book} ${next_chapter} →]]"
+      fi
+    fi
 
-  # Navigation format
-  if [[ ${breadcrumbs_yaml} -eq "true" ]]; then
-  export="${title}\n***\n\n$text"
-  else
-  export="${title}\n\n$navigation\n***\n\n$text\n\n***\n$navigation"
-  fi
+    # Navigation with INLINE BREADCRUMBS ENABLED
+    if ${breadcrumbs_inline} -eq "true"; then
+      # Formatting Navigation and omitting links that aren't necessary
+      if [ ${maxchapter} -eq 1 ]; then
+        # For a book that only has one chapter
+        navigation="(up:: [[${book}]])"
+      elif [ ${chapter} -eq ${maxchapter} ]; then
+        # If this is the last chapter of the book
+        navigation="(previous:: [[${prev_file}|← ${book} ${prev_chapter}]]) | (up:: [[${book}]])"
+      elif [ ${chapter} -eq 1 ]; then
+        # If this is the first chapter of the book
+        navigation="(up:: [[${book}]]) | (next:: [[${next_file}|${book} ${next_chapter} →]])"
+      else
+        # Navigation for everything else
+        navigation="(previous:: [[${prev_file}|← ${book} ${prev_chapter}]]) | (up:: [[${book}]]) | (next:: [[${next_file}|${book} ${next_chapter} →]])"
+      fi
+    fi
 
-# YAML
-yaml_start="---\n"
-yaml_end="\n---\n"
-alias="Aliases: [${book} ${chapter}]" # Add other aliases or 'Tags:' here if desired. Make sure to follow proper YAML format.
+    if ${boldwords} -eq "true" && ${headers} -eq "false"; then
+      text=$(ruby bg2md.rb -e -c -b -f -l -r -v "${translation}" "${book} ${chapter}") # This calls the 'bg2md_mod' script
+    elif ${boldwords} -eq "true" && ${headers} -eq "true"; then
+      text=$(ruby bg2md.rb -c -b -f -l -r -v "${translation}" "${book} ${chapter}") # This calls the 'bg2md_mod' script
+    elif ${boldwords} -eq "false" && ${headers} -eq "true"; then
+      text=$(ruby bg2md.rb -e -c -f -l -r -v "${translation}" "${book} ${chapter}") # This calls the 'bg2md_mod' script
+    else
+      text=$(ruby bg2md.rb -e -c -f -l -r -v "${translation}" "${book} ${chapter}") # This calls the 'bg2md_mod' script
+    fi
 
-  # Navigation with INLINE BREADCRUMBS ENABLED
-  if ${breadcrumbs_yaml} -eq "true"; then
-  # Formatting Navigation and omitting links that aren't necessary
-  if [ ${maxchapter} -eq 1 ]; then
-    # For a book that only has one chapter
-    bc_yaml="up: ['${book}']"
-  elif [ ${chapter} -eq ${maxchapter} ]; then
-    # If this is the last chapter of the book
-    bc_yaml="previous: ['${prev_file}']\nup: ['${book}']"
-  elif [ ${chapter} -eq 1 ]; then
-    # If this is the first chapter of the book
-    bc_yaml="up: ['${book}']\nnext: ['${next_file}']"
-  else
-    # Navigation for everything else
-    bc_yaml="up: ['${book}']\nprevious: ['${prev_file}']\nnext: ['${next_file}']"
-  fi
-  fi
 
-# Printing YAML
-  if [ ${aliases} == "true" ] && [ ${breadcrumbs_yaml} == "false" ]; then
-    yaml="${yaml_start}${alias}${yaml_end}"
-  elif [ ${aliases} == "true" ] && [ ${breadcrumbs_yaml} == "true" ]; then
-    yaml="${yaml_start}${alias}\n${bc_yaml}${yaml_end}"
+    text=$(echo $text | sed 's/^(.*?)v1/v1/') # Deleting unwanted headers
+
+    # Formatting the title for markdown
+    title="# ${book} ${chapter}"
+
+    # Navigation format
+    if [[ ${breadcrumbs_yaml} == "true" ]]; then
+      export="${title}\n***\n\n$text"
+    else
+      export="${title}\n\n$navigation\n***\n\n$text\n\n***\n$navigation"
+    fi
+
+    # YAML
+    yaml_start="---\n"
+    yaml_end="\n---\n"
+    alias="Aliases: [${book} ${chapter}]" # Add other aliases or 'Tags:' here if desired. Make sure to follow proper YAML format.
+
+    # Navigation with INLINE BREADCRUMBS ENABLED
+    if ${breadcrumbs_yaml} -eq "true"; then
+      # Formatting Navigation and omitting links that aren't necessary
+      if [ ${maxchapter} -eq 1 ]; then
+        # For a book that only has one chapter
+        bc_yaml="up: ['${book}']"
+      elif [ ${chapter} -eq ${maxchapter} ]; then
+        # If this is the last chapter of the book
+        bc_yaml="previous: ['${prev_file}']\nup: ['${book}']"
+      elif [ ${chapter} -eq 1 ]; then
+        # If this is the first chapter of the book
+        bc_yaml="up: ['${book}']\nnext: ['${next_file}']"
+      else
+        # Navigation for everything else
+        bc_yaml="up: ['${book}']\nprevious: ['${prev_file}']\nnext: ['${next_file}']"
+      fi
+    fi
+
+    # Printing YAML
+    if [ ${aliases} == "true" ] && [ ${breadcrumbs_yaml} == "false" ]; then
+      yaml="${yaml_start}${alias}${yaml_end}"
+    elif [ ${aliases} == "true" ] && [ ${breadcrumbs_yaml} == "true" ]; then
+      yaml="${yaml_start}${alias}\n${bc_yaml}${yaml_end}"
     elif [ ${aliases} == "false" ] && [ ${breadcrumbs_yaml} == "true" ]; then
-    yaml="${yaml_start}${bc_yaml}${yaml_end}"
-  fi
+      yaml="${yaml_start}${bc_yaml}${yaml_end}"
+    fi
   
 
-  export="${yaml}${export}"
-  # Export
-  echo -e $export >> "$filename.md"
+    export="${yaml}${export}"
+    
+    # Export
+    echo -e $export >> "$filename.md"
 
-  # Creating a folder
+    # Creating a folder
+    folder_name="${book}" # Setting the folder name
 
-  folder_name="${book}" # Setting the folder name
+    # Creating a folder for the book of the Bible if it doesn't exist, otherwise moving new file into existing folder
+    mkdir -p "./${biblename} (${translation})/${folder_name}"; mv "${filename}".md "./${biblename} (${translation})/${folder_name}"
 
-  # Creating a folder for the book of the Bible if it doesn't exist, otherwise moving new file into existing folder
-  mkdir -p "./${biblename} (${translation})/${folder_name}"; mv "${filename}".md "./${biblename} (${translation})/${folder_name}"
-
-
-done # End of the book exporting loop
+  done # End of the book exporting loop
 
   # Create an overview file for each book of the Bible:
   overview_file="links: [[${biblename}]]\n# ${book}\n\n[[${abbreviation} 1|Start Reading →]]"
@@ -245,7 +252,7 @@ done # End of the book exporting loop
 
   # Append the bookname to "The Bible" file
   echo -e "* [[${book}]]" >> "${biblename}.md"
-  done
+done
 
 # Tidy up the Markdown files by removing unneeded headers and separating the verses
 # with some blank space and an H6-level verse number.
